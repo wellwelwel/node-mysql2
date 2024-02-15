@@ -74,5 +74,6 @@ jobs:
           MYSQL_PORT: ${{ env.MYSQL_PORT }}
           MYSQL_USE_COMPRESSION: ${{ matrix.use-compression }}
           MYSQL_USE_TLS: ${{ matrix.use-tls }}
-        run: FILTER=test-select-1|test-select-ssl bun run test
+          FILTER: test-select-1|test-select-ssl
+        run: bun run test
         timeout-minutes: 1
