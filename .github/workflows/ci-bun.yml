@@ -46,11 +46,6 @@ jobs:
         with:
           bun-version: ${{ matrix.bun-version }}
 
-      - name: Remove Node.js
-        run: |
-          sudo apt-get remove -y nodejs
-          sudo apt-get autoremove -y
-
       - name: Cache Bun dependencies
         uses: actions/cache@v3
         with:
@@ -73,5 +68,5 @@ jobs:
           MYSQL_USE_COMPRESSION: ${{ matrix.use-compression }}
           MYSQL_USE_TLS: ${{ matrix.use-tls }}
           FILTER: test-select-1|test-select-ssl
-        run: bun run test
+        run: bun run test:bun
         timeout-minutes: 1
