@@ -48,8 +48,8 @@ jobs:
 
       - name: Remove Node.js
         run: |
-          apt-get remove -y nodejs
-          apt-get autoremove -y
+          sudo apt-get remove -y nodejs
+          sudo apt-get autoremove -y
 
       - name: Cache Bun dependencies
         uses: actions/cache@v3
