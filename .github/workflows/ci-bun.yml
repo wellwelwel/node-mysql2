@@ -46,6 +46,11 @@ jobs:
         with:
           bun-version: ${{ matrix.bun-version }}
 
+      - name: Remove Node.js
+        run: |
+          apt-get remove -y nodejs
+          apt-get autoremove -y
+
       - name: Cache Bun dependencies
         uses: actions/cache@v3
         with:
@@ -57,7 +62,7 @@ jobs:
         run: bun install
 
       - name: Wait mysql server is ready
-        run: node tools/wait-up.js
+        run: bun tools/wait-up.js
 
       # todo: run full test suite once test createServer is implemented using Bun.listen
       - name: run tests
