@@ -82,5 +82,5 @@ jobs:
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: compression-${{ matrix.use-compression }},tls-${{ matrix.use-tls }},static-parser-${{ matrix.static-parser }}
-          name: codecov-umbrella-${{ matrix.node-version }}-${{ matrix.mysql-version }}-compression-${{ matrix.use-compression }}-tls-${{ matrix.use-tls }}-static-parser-${{ matrix.static-parser }}
+          flags: node-compression-${{ matrix.use-compression }},node-tls-${{ matrix.use-tls }},node-static-parser-${{ matrix.static-parser }}
+          name: codecov-umbrella-node-${{ matrix.node-version }}-${{ matrix.mysql-version }}-compression-${{ matrix.use-compression }}-tls-${{ matrix.use-tls }}-static-parser-${{ matrix.static-parser }}
