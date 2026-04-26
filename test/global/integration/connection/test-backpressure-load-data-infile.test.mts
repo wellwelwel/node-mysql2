@@ -15,6 +15,12 @@ if (config.compress) {
   );
 }
 
+if (typeof Bun !== 'undefined') {
+  skip(
+    'skipping test on Bun: native node:stream Duplex does not honor writableHighWaterMark when _write callback is withheld'
+  );
+}
+
 class BigInput extends Readable {
   count = 0;
   MAX_EXPECTED_ROWS = 100_000;
