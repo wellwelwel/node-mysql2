@@ -17,6 +17,10 @@ on:
 
   workflow_dispatch:
 
+concurrency:
+  group: '${{ github.workflow }}-${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
 env:
   MYSQL_PORT: 3306
   MYSQL_USER: root
@@ -124,8 +128,15 @@ jobs:
           MYSQL_PORT: ${{ env.MYSQL_PORT }}
           MYSQL_USE_COMPRESSION: ${{ matrix.use-compression }}
           MYSQL_USE_TLS: ${{ matrix.use-tls }}
-        run: bun run test:bun
+        run: bun run test:bun -- --coverage
         timeout-minutes: 10
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: bun-compression-${{ matrix.use-compression }},bun-tls-${{ matrix.use-tls }},bun-static-parser-${{ matrix.static-parser }}
+          name: codecov-umbrella-bun-${{ matrix.bun-version }}-${{ matrix.mysql-version }}-compression-${{ matrix.use-compression }}-tls-${{ matrix.use-tls }}-static-parser-${{ matrix.static-parser }}
 
   tests-linux-deno-v2:
     runs-on: ubuntu-latest
@@ -183,5 +194,12 @@ jobs:
           MYSQL_PORT: ${{ env.MYSQL_PORT }}
           MYSQL_USE_COMPRESSION: ${{ matrix.use-compression }}
           MYSQL_USE_TLS: ${{ matrix.use-tls }}
-        run: deno task test:deno
+        run: deno task test:deno -- --coverage
         timeout-minutes: 10
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: deno-compression-${{ matrix.use-compression }},deno-tls-${{ matrix.use-tls }},deno-static-parser-${{ matrix.static-parser }}
+          name: codecov-umbrella-deno-${{ matrix.deno-version }}-${{ matrix.mysql-version }}-compression-${{ matrix.use-compression }}-tls-${{ matrix.use-tls }}-static-parser-${{ matrix.static-parser }}
